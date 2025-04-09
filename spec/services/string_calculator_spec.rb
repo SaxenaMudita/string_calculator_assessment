@@ -25,5 +25,11 @@ RSpec.describe StringCalculator do
         expect(StringCalculator.add('1,2,3,4,5')).to eq(15)
       end
     end
+
+    context 'when given a string with new lines' do
+      it 'handles new lines between numbers' do
+        expect(StringCalculator.add("1\n2,3")).to eq(6)
+      end
+    end
   end
 end
