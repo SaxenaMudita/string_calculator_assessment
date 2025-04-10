@@ -68,6 +68,36 @@ RSpec.describe StringCalculator do
       it { is_expected.to eq(6) }
     end
 
+    context 'when custom delimiter is declared but not used' do
+      let(:input) { "//;\n" }
+      it { is_expected.to eq(0) }
+    end
+
+    context 'when input contains only delimiters' do
+      let(:input) { ",,\n" }
+      it { is_expected.to eq(0) }
+    end
+
+    context 'when input contains mixed delimiters with empty sections' do
+      let(:input) { "1,\n,2" }
+      it { is_expected.to eq(3) }
+    end
+
+    context 'when input contains numbers equal to 1000' do
+      let(:input) { "1000,2" }
+      it { is_expected.to eq(1002) }
+    end
+
+    context 'when input contains consecutive delimiters' do
+      let(:input) { "1,,2" }
+      it { is_expected.to eq(3) }
+    end
+
+    context 'when custom delimiters are used with numbers greater than 1000' do
+      let(:input) { "//;\n1001;2" }
+      it { is_expected.to eq(2) }
+    end
+
     context 'when custom delimiter format is invalid' do
       let(:input) { "//[**\n1**2" }
       it 'raises an error' do
