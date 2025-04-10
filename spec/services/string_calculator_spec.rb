@@ -41,13 +41,6 @@ RSpec.describe StringCalculator do
       end
     end
 
-    context 'when given multiple negative numbers' do
-      let(:input) { '1,-2,-3' }
-      it 'raises an error' do
-        expect { subject }.to raise_error(RuntimeError, 'Negative numbers not allowed: -2, -3')
-      end
-    end
-
     context 'when given numbers greater than 1000' do
       let(:input) { '2,1001' }
       it { is_expected.to eq(2) }
@@ -96,6 +89,13 @@ RSpec.describe StringCalculator do
     context 'when custom delimiters are used with numbers greater than 1000' do
       let(:input) { "//;\n1001;2" }
       it { is_expected.to eq(2) }
+    end
+
+    context 'when given multiple negative numbers' do
+      let(:input) { '1,-2,-3' }
+      it 'raises an error' do
+        expect { subject }.to raise_error(RuntimeError, 'Negative numbers not allowed: -2, -3')
+      end
     end
 
     context 'when custom delimiter format is invalid' do
