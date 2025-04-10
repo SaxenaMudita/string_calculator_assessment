@@ -13,11 +13,16 @@ class StringCalculator
   private
 
   def self.extract_custom_delimiter(numbers)
-    if numbers.start_with?("//")
+    if numbers.start_with?("//[")
+      delimiters = numbers.scan(/\[(.*?)\]/).flatten
+      delimiter_regex = delimiters.map { |d| Regexp.escape(d) }.join("|")
+      numbers = numbers.split("\n", 2).last
+      [ delimiter_regex, numbers ]
+    elsif numbers.start_with?("//")
       delimiter, numbers = numbers[2..].split("\n", 2)
-      [Regexp.escape(delimiter), numbers]
+      [ Regexp.escape(delimiter), numbers ]
     else
-      [DEFAULT_DELIMITERS, numbers]
+      [ DEFAULT_DELIMITERS, numbers ]
     end
   end
 
