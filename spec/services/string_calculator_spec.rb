@@ -2,74 +2,70 @@ require 'rails_helper'
 
 RSpec.describe StringCalculator do
   describe '.add' do
+    subject { StringCalculator.add(input) }
+
     context 'when given an empty string' do
-      it 'returns 0' do
-        expect(StringCalculator.add('')).to eq(0)
-      end
+      let(:input) { '' }
+      it { is_expected.to eq(0) }
     end
 
     context 'when given a single number' do
-      it 'returns the number itself' do
-        expect(StringCalculator.add('5')).to eq(5)
-      end
+      let(:input) { '5' }
+      it { is_expected.to eq(5) }
     end
 
-    context 'when two numbers are given' do
-      it 'returns the sum of the numbers' do
-        expect(StringCalculator.add('1,2')).to eq(3)
-      end
+    context 'when given two numbers' do
+      let(:input) { '1,2' }
+      it { is_expected.to eq(3) }
     end
 
-    context 'when multiple numbers are given' do
-      it 'returns the sum of all the numbers' do
-        expect(StringCalculator.add('1,2,3,4,5')).to eq(15)
-      end
+    context 'when given multiple numbers' do
+      let(:input) { '1,2,3,4,5' }
+      it { is_expected.to eq(15) }
     end
 
     context 'when given a string with new lines' do
-      it 'handles new lines between numbers' do
-        expect(StringCalculator.add("1\n2,3")).to eq(6)
-      end
+      let(:input) { "1\n2,3" }
+      it { is_expected.to eq(6) }
     end
 
     context 'when given a string with custom delimiters' do
-      it 'handles custom delimiters' do
-        expect(StringCalculator.add("//;\n1;2;3")).to eq(6)
-      end
+      let(:input) { "//;\n1;2;3" }
+      it { is_expected.to eq(6) }
     end
 
     context 'when given a string with negative numbers' do
+      let(:input) { '1,-2,3' }
       it 'raises an error' do
-        expect { StringCalculator.add("1,-2,3") }.to raise_error(RuntimeError, "Negative numbers not allowed: -2")
-      end
-
-      it 'raises an error for multiple negative numbers' do
-        expect { StringCalculator.add("1,-2,-3") }.to raise_error(RuntimeError, "Negative numbers not allowed: -2, -3")
+        expect { subject }.to raise_error(RuntimeError, 'Negative numbers not allowed: -2')
       end
     end
 
-    context 'when given a string with numbers greater than 1000' do
-      it 'ignores numbers greater than 1000' do
-        expect(StringCalculator.add("2,1001")).to eq(2)
+    context 'when given multiple negative numbers' do
+      let(:input) { '1,-2,-3' }
+      it 'raises an error' do
+        expect { subject }.to raise_error(RuntimeError, 'Negative numbers not allowed: -2, -3')
       end
+    end
+
+    context 'when given numbers greater than 1000' do
+      let(:input) { '2,1001' }
+      it { is_expected.to eq(2) }
     end
 
     context 'when custom delimiters of any length are given' do
-      it 'handles custom delimiters of any length' do
-        expect(StringCalculator.add("//[***]\n1***2***3")).to eq(6)
-      end
+      let(:input) { "//[***]\n1***2***3" }
+      it { is_expected.to eq(6) }
     end
 
     context 'when multiple custom delimiters are given' do
-      it 'handles multiple custom delimiters' do
-        expect(StringCalculator.add("//[*][%]\n1*2%3")).to eq(6)
-      end
+      let(:input) { "//[*][%]\n1*2%3" }
+      it { is_expected.to eq(6) }
     end
 
     context 'when multiple custom delimiters with length greater than one are given' do
-      it 'handles multiple custom delimiters with length greater than one' do
-        expect(StringCalculator.add("//[***][%%]\n1***2%%3")).to eq(6)
-      end
+      let(:input) { "//[***][%%]\n1***2%%3" }
+      it { is_expected.to eq(6) }
     end
   end
 end
