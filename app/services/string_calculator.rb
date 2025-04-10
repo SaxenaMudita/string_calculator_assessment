@@ -15,14 +15,14 @@ class StringCalculator
   def self.extract_custom_delimiter(numbers)
     if numbers.start_with?("//")
       delimiter, numbers = numbers[2..].split("\n", 2)
-      [ Regexp.escape(delimiter), numbers ]
+      [Regexp.escape(delimiter), numbers]
     else
-      [ DEFAULT_DELIMITERS, numbers ]
+      [DEFAULT_DELIMITERS, numbers]
     end
   end
 
   def self.split_numbers(numbers, delimiter)
-    numbers.split(/#{delimiter}/).map(&:to_i)
+    numbers.split(/#{delimiter}/).map(&:to_i).reject { |n| n > 1000 }
   end
 
   def self.validate_no_negatives(nums)
