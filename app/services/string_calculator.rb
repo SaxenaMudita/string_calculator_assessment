@@ -15,6 +15,7 @@ class StringCalculator
 
     def parse_delimiters(numbers)
       if custom_delimiters?(numbers)
+        validate_custom_delimiter_format!(numbers)
         parse_multiple_delimiters(numbers)
       elsif single_custom_delimiter?(numbers)
         parse_single_delimiter(numbers)
@@ -40,6 +41,12 @@ class StringCalculator
     def parse_single_delimiter(numbers)
       delimiter, remaining_numbers = numbers[2..].split("\n", 2)
       [ Regexp.escape(delimiter), remaining_numbers ]
+    end
+
+    def validate_custom_delimiter_format!(numbers)
+      unless numbers.match?(/^\/\/(\[.*?\])+\n/)
+        raise "Invalid custom delimiter format"
+      end
     end
 
     def parse_numbers(numbers, delimiter)

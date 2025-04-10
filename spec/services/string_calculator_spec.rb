@@ -67,5 +67,12 @@ RSpec.describe StringCalculator do
       let(:input) { "//[***][%%]\n1***2%%3" }
       it { is_expected.to eq(6) }
     end
+
+    context 'when custom delimiter format is invalid' do
+      let(:input) { "//[**\n1**2" }
+      it 'raises an error' do
+        expect { subject }.to raise_error(RuntimeError, 'Invalid custom delimiter format')
+      end
+    end
   end
 end
